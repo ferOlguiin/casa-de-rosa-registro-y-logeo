@@ -8,6 +8,7 @@ import {PRIVATE_KEY} from '../config.js'
 export const RegistrarUsuario = async (req, res) => {
     try {
         const {email, password} = req.body;
+        let descuentoParaClientes = 15;
 
         //chequeo que no exista otro mail
         const chequeoDeEmail = await User.findOne({email}).lean();
@@ -19,10 +20,10 @@ export const RegistrarUsuario = async (req, res) => {
         const passwordEncrypted = await encryptPassword(password);
         
         //creo nuevo usuario
-        const newUser = new User({email: email, password: passwordEncrypted});
+        const newUser = new User({email: email, password: passwordEncrypted, descuento: descuentoParaClientes});
         await newUser.save();
 
-        return res.send(newUser);
+        return res.send({_id: newUser._id, email: newUser.email, descuento: newUser.descuento});
         
     } catch (error) {
         return res.status(400).send("Algo salió mal que no pudo completarse el proceso de registro del usuario");
@@ -44,8 +45,8 @@ export const LogearUsuario = async (req, res) => {
             return res.status(400).send("Credenciales inválidas");
         }
 
-        const accessToken = jwt.sign({ userId: user._id, email: user.email }, PRIVATE_KEY, { expiresIn: "3h" });
-        const refreshToken = jwt.sign({ userId: user._id, email: user.email }, PRIVATE_KEY, { expiresIn: "72h" });
+        const accessToken = jwt.sign({ userId: user._id }, PRIVATE_KEY, { expiresIn: "3h" });
+        const refreshToken = jwt.sign({ userId: user._id }, PRIVATE_KEY, { expiresIn: "7d" });
 
         //envio el refreshtoken en una cookie segura
         res.cookie("refreshToken", refreshToken, {
@@ -58,7 +59,8 @@ export const LogearUsuario = async (req, res) => {
         return res.send({
             user: {
                 _id: user._id,
-                email: user.email
+                email: user.email,
+                descuento: user.descuento
             },
             accessToken
         });
@@ -71,7 +73,7 @@ export const LogearUsuario = async (req, res) => {
 //GET PETITION
 export const ActualizarToken = async (req, res) => {
     
-    const { refreshToken } = req.cookies.refreshToken;
+    const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) return res.status(401).send("Refresh token requerido");
     
     try {
@@ -81,7 +83,7 @@ export const ActualizarToken = async (req, res) => {
         if (!user) return res.status(404).send("Usuario no encontrado");
 
         const newAccessToken = jwt.sign(
-            { userId: user._id, email: user.email },
+            { userId: user._id },
             PRIVATE_KEY,
             { expiresIn: "3h" }
         );
@@ -89,7 +91,8 @@ export const ActualizarToken = async (req, res) => {
             accessToken: newAccessToken,
             user: {
                 _id: user._id,
-                email: user.email
+                email: user.email,
+                descuento: user.descuento
             }
         });
     } catch (error) {

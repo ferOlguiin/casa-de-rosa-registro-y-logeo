@@ -7,9 +7,7 @@ const app = express();
 
 //middlewares
 app.use(express.json());
-app.use(cors({
-    origin: ["https://www.casaderosaonline.com.ar", "https://casaderosaonline.com.ar"]
-  }));
+// app.use(cors({origin: ["https://www.casaderosaonline.com.ar", "https://casaderosaonline.com.ar"]}));
   
 app.use(router);
 

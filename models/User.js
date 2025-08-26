@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true
+    },
+    descuento: {
+        type: Number,
+        trim: true,
+        required: true
     }
 })
 

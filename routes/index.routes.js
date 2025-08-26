@@ -1,12 +1,14 @@
 import { Router } from "express";
-import { LogearUsuario } from "../controllers/index.controllers.js";
+import { ActualizarToken, LogearUsuario, RegistrarUsuario } from "../controllers/index.controllers.js";
 
 const router = Router();
 
 router.get("/", (req, res) => {
-    console.log("welcome to backend cdr")
+    res.send("Welcome to backend cdr")
 })
 
-router.post("/logearusuario", LogearUsuario);
+router.post("/login", LogearUsuario);
+router.post("/register", RegistrarUsuario);
+router.post("/refresh-token", ActualizarToken);
 
 export default router
