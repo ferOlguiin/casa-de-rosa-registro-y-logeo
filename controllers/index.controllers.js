@@ -52,9 +52,9 @@ export const LogearUsuario = async (req, res) => {
 
         //envio el refreshtoken en una cookie segura
         res.cookie("refreshToken", refreshToken, {
-            httpOnly: false, //PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
-            secure: false, // solo HTTPS PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
-            sameSite: "strict",
+            httpOnly: true, //PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
+            secure: true, // solo HTTPS PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
+            sameSite: "sameSite", //PONER EN sameSite EN PRODUCCION
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
         });
 
@@ -75,6 +75,7 @@ export const LogearUsuario = async (req, res) => {
 //POST PETITION
 export const ActualizarToken = async (req, res) => {
 
+    console.log(req.cookies.refreshToken);
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) return res.status(401).send("Refresh token requerido");
     
@@ -107,7 +108,7 @@ export const ActualizarToken = async (req, res) => {
 export const DeslogearUsuario = (req, res) => {
     res.clearCookie("refreshToken", {
         httpOnly: true,
-        secure: true,
+        secure: true, //PONER EN TRUE PARA DESARROLLO
         sameSite: "strict"
     });
     return res.send({ message: "Sesión cerrada correctamente" });
