@@ -52,9 +52,9 @@ export const LogearUsuario = async (req, res) => {
 
         //envio el refreshtoken en una cookie segura
         res.cookie("refreshToken", refreshToken, {
-            httpOnly: true, //PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
-            secure: true, // solo HTTPS PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
-            sameSite: "sameSite", //PONER EN sameSite EN PRODUCCION
+            httpOnly: false, //PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
+            secure: false, // solo HTTPS PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
+            sameSite: "lax", //PONER EN sameSite EN PRODUCCION
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
         });
 
