@@ -2,12 +2,14 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import { comparePassword, encryptPassword } from "../bcrypt/bcrypt.js";
 import {PRIVATE_KEY} from '../config.js'
+import crypto from 'crypto'
 
 
 //POST PETITION
 export const RegistrarUsuario = async (req, res) => {
     try {
-        const {email, password} = req.body;
+        const {email} = req.body;
+        const contraseñaAutogenerada = crypto.randomBytes(8).toString('base64');
         let descuentoParaClientes = 15;
 
         //chequeo que no exista otro mail
@@ -17,7 +19,7 @@ export const RegistrarUsuario = async (req, res) => {
         }
             
         //encripto contraseña 
-        const passwordEncrypted = await encryptPassword(password);
+        const passwordEncrypted = await encryptPassword(contraseñaAutogenerada);
         
         //creo nuevo usuario
         const newUser = new User({email: email, password: passwordEncrypted, descuento: descuentoParaClientes});
@@ -50,8 +52,8 @@ export const LogearUsuario = async (req, res) => {
 
         //envio el refreshtoken en una cookie segura
         res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-            secure: true, // solo HTTPS
+            httpOnly: false, //PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
+            secure: false, // solo HTTPS PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
         });
@@ -70,9 +72,9 @@ export const LogearUsuario = async (req, res) => {
 }
 
 
-//GET PETITION
+//POST PETITION
 export const ActualizarToken = async (req, res) => {
-    
+
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) return res.status(401).send("Refresh token requerido");
     
@@ -99,4 +101,14 @@ export const ActualizarToken = async (req, res) => {
         return res.status(403).send("Refresh token inválido o expirado");
     }
 
+}
+
+//POST PETITION
+export const DeslogearUsuario = (req, res) => {
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict"
+    });
+    return res.send({ message: "Sesión cerrada correctamente" });
 }
