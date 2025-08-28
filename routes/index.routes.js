@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ActualizarToken, DeslogearUsuario, LogearUsuario, RegistrarUsuario } from "../controllers/index.controllers.js";
+import { ActualizarToken, DeslogearUsuario, enviarPedido, LogearUsuario, RegistrarUsuario } from "../controllers/index.controllers.js";
 
 const router = Router();
 
@@ -11,5 +11,6 @@ router.post("/login", LogearUsuario);
 router.post("/register", RegistrarUsuario);
 router.post("/refresh-token", ActualizarToken);
 router.post("/logout", DeslogearUsuario);
+router.post("/send-order", enviarPedido)
 
 export default router

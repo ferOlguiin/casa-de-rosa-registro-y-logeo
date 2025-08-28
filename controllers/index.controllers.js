@@ -4,6 +4,7 @@ import { comparePassword, encryptPassword } from "../bcrypt/bcrypt.js";
 import {PRIVATE_KEY} from '../config.js'
 import crypto from 'crypto'
 import { registrarUsuarioAviso } from "../nodemailer/registrarUsuarioAviso.js";
+import { administracionCasaDeRosaAviso } from "../nodemailer/administracionCasaDeRosaAviso.js";
 
 
 //POST PETITION
@@ -113,8 +114,19 @@ export const ActualizarToken = async (req, res) => {
 export const DeslogearUsuario = (req, res) => {
     res.clearCookie("refreshToken", {
         httpOnly: true,
-        secure: true, //PONER EN TRUE PARA DESARROLLO
+        secure: true,
         sameSite: "strict"
     });
     return res.send({ message: "Sesión cerrada correctamente" });
 }
+
+//POST PETITION
+export const enviarPedido = async (req, res) => {
+  try {
+    await administracionCasaDeRosaAviso(req.body);
+    res.send({ message: "Pedido enviado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error al enviar pedido" });
+  }
+};
