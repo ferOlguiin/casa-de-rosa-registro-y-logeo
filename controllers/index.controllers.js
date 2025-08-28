@@ -25,7 +25,11 @@ export const RegistrarUsuario = async (req, res) => {
         const newUser = new User({email: email, password: passwordEncrypted, descuento: descuentoParaClientes});
         await newUser.save();
 
-        return res.send({_id: newUser._id, email: newUser.email, descuento: newUser.descuento});
+        //aca hay que avisar al nuevo usuario via mail y enviarle la contraseña de la variable "contraseñaAutogenerada"
+        
+
+        // return res.send({_id: newUser._id, email: newUser.email, descuento: newUser.descuento});
+        return res.send({ message: "Usuario creado correctamente" });
         
     } catch (error) {
         return res.status(400).send("Algo salió mal que no pudo completarse el proceso de registro del usuario");
