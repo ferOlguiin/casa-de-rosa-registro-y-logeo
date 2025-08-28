@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { comparePassword, encryptPassword } from "../bcrypt/bcrypt.js";
 import {PRIVATE_KEY} from '../config.js'
 import crypto from 'crypto'
+import { registrarUsuarioAviso } from "../nodemailer/registrarUsuarioAviso.js";
 
 
 //POST PETITION
@@ -26,7 +27,7 @@ export const RegistrarUsuario = async (req, res) => {
         await newUser.save();
 
         //aca hay que avisar al nuevo usuario via mail y enviarle la contraseña de la variable "contraseñaAutogenerada"
-        
+        await registrarUsuarioAviso({email: email, contraseña: contraseñaAutogenerada});
 
         // return res.send({_id: newUser._id, email: newUser.email, descuento: newUser.descuento});
         return res.send({ message: "Usuario creado correctamente" });
