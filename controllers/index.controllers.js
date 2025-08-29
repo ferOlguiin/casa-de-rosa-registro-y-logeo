@@ -117,7 +117,7 @@ export const ActualizarToken = async (req, res) => {
 //POST PETITION
 export const DeslogearUsuario = (req, res) => {
     res.clearCookie("refreshToken", {
-        domain: ".casaderosaonline.com.ar",
+        domain: "casaderosaonline.com.ar",
         httpOnly: true,
         secure: true,
         sameSite: "strict"
