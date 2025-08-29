@@ -17,7 +17,7 @@ export const RegistrarUsuario = async (req, res) => {
         //chequeo que no exista otro mail
         const chequeoDeEmail = await User.findOne({email}).lean();
         if(chequeoDeEmail !== null){
-            return res.status(400).send("Error hay un mail duplicado")
+            return res.status(409).send({message: "Ese usuario ya está registrado"});
         }
             
         //encripto contraseña 
@@ -28,13 +28,16 @@ export const RegistrarUsuario = async (req, res) => {
         await newUser.save();
 
         //aca hay que avisar al nuevo usuario via mail y enviarle la contraseña de la variable "contraseñaAutogenerada"
-        await registrarUsuarioAviso({email: email, contraseña: contraseñaAutogenerada});
+        try {
+            await registrarUsuarioAviso({email: email, contrasena: contraseñaAutogenerada, descuento: descuentoParaClientes});
+        } catch (error) {
+            return res.status(500).send("No pudimos notificar al nuevo usuario");
+        }
 
-        // return res.send({_id: newUser._id, email: newUser.email, descuento: newUser.descuento});
-        return res.send({ message: "Usuario creado correctamente" });
+        return res.send("Usuario creado correctamente");
         
     } catch (error) {
-        return res.status(400).send("Algo salió mal que no pudo completarse el proceso de registro del usuario");
+        return res.status(500).send("Algo salió mal que no pudo completarse el proceso de registro del usuario");
     }
 }
 

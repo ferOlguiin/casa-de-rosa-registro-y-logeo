@@ -15,11 +15,10 @@ export const administracionCasaDeRosaAviso = async (info) => {
               </head>
               <body style="margin-bottom:20px; margin-top:20px; padding-top:20px; padding-bottom:20px">
                 <header>
-                  <img src="https://casaderosaonline.com.ar/assets/logo-hgI3Y4uD.png" alt="Casa De Rosa" width="500px">
+                  <img src="https://casaderosaonline.com.ar/assets/logo-hgI3Y4uD.png" style="margin-top:45px; margin-bottom:15px" alt="Casa De Rosa" width="250px">
                 </header>
                 <main>
                   <h1>Detalles del pedido</h1>
-                  <h3 style="margin-top:15px; text-decoration:underline">DATOS DEL COMPRADOR</h3>
                   <p style="font-size:15px"><strong>Nombre:</strong> ${info.nombre}</p>
                   <p style="font-size:15px"><strong>Razón social:</strong> ${info.razon_social}</p>
                   <p style="font-size:15px"><strong>Email:</strong> ${info.mail}</p>
@@ -29,12 +28,12 @@ export const administracionCasaDeRosaAviso = async (info) => {
                   <p style="font-size:15px"><strong>Horario de entrega seleccionado:</strong> ${info.horario_de_entrega}</p>
                   <p style="font-size:15px"><strong>Método de pago seleccionado:</strong> ${info.metodo_de_pago}</p>
                   <p style="font-size:15px"><strong>Vendedor elegido:</strong> ${info.vendedor_seleccionado}</p>
-                  <p style="font-size:15px"><strong>Precio Total del pedido:</strong> ${info.precio_total}</p>
+                  <p style="font-size:15px"><strong>Precio Total del pedido:</strong> $${(info.precio_total).toLocaleString()}</p>
                   <p style="margin-top:45px; font-size:15px; text-decoration:underline"><strong>PRODUCTOS SOLICITADOS:</strong></p>
                   ${productos.map((item) => `<ul>
                       <li style="font-size:14px"><strong>Nombre del producto: </strong>${item.nombre}</li>
                       <li style="font-size:14px"><strong>Cantidad comprada: </strong>${item.cantidad}</li>
-                      <li style="font-size:14px"><strong>Precio total de este producto: </strong>${(item.cantidad * item.punit).toLocaleString()}</li>
+                      <li style="font-size:14px"><strong>Precio total de este producto: </strong>$${(item.cantidad * item.punit).toLocaleString()}</li>
                     </ul>`)}
                 </main>
               </body>
