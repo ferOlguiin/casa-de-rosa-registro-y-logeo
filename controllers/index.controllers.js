@@ -61,9 +61,10 @@ export const LogearUsuario = async (req, res) => {
 
         //envio el refreshtoken en una cookie segura
         res.cookie("refreshToken", refreshToken, {
-            httpOnly: false, //PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
-            secure: false, // solo HTTPS PONER EN TRUE CUANDO VAYA A PRODUCCIÓN
-            sameSite: "lax", //PONER EN sameSite EN PRODUCCION
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            domain: ".casaderosaonline.com.ar",
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
         });
 
@@ -116,6 +117,7 @@ export const ActualizarToken = async (req, res) => {
 //POST PETITION
 export const DeslogearUsuario = (req, res) => {
     res.clearCookie("refreshToken", {
+        domain: ".casaderosaonline.com.ar",
         httpOnly: true,
         secure: true,
         sameSite: "strict"
@@ -129,7 +131,6 @@ export const enviarPedido = async (req, res) => {
     await administracionCasaDeRosaAviso(req.body);
     res.send({ message: "Pedido enviado correctamente" });
   } catch (error) {
-    console.error(error);
     res.status(500).send({ message: "Error al enviar pedido" });
   }
 };
