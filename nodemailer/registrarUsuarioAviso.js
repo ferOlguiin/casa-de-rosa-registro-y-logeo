@@ -21,7 +21,7 @@ export const registrarUsuarioAviso = async (data) => {
                     <h1>Datos de tu usuario</h1>
                     
                     <p style="font-size:15px"><strong>Email:</strong> ${data.email}</p>
-                    <p style="font-size:15px"><strong>Contraseña:</strong> ${data.password}</p>
+                    <p style="font-size:15px"><strong>Contraseña:</strong> ${data.contrasena}</p>
                     <p style="font-size:15px; margin-top:15px"><strong>Descuento:</strong> Cada vez que ingreses a nuestra web con tu usuario y contraseña, podrás ver aplicado un descuento del ${data.descuento}% en cada uno de nuestros productos</p>
 
                     <p style="font-size:15px; margin-top:25px">Para acceder a tu cuenta, ingresa en <a href="https://casaderosaonline.com.ar"> casaderosaonline.com.ar</a> y luego inicia sesión clickeando el ícono de usuario.</p>
