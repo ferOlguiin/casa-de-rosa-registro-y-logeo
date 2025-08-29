@@ -65,7 +65,7 @@ export const LogearUsuario = async (req, res) => {
             secure: true,
             sameSite: "strict",
             domain: ".casaderosaonline.com.ar",
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 días
         });
 
         return res.send({
