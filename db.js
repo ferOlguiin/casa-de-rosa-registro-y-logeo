@@ -1,13 +1,20 @@
 import mongoose from "mongoose";
-
 import { URI_MONGODB } from "./config.js";
 
-export async function connectDB(){
-    try {
-        mongoose.set("strictQuery", false)
-        const db = await mongoose.connect(URI_MONGODB);
-        console.log("conectado a la base de datos: " + db.connection.name)
-    } catch (error) {
-        console.log(error)
-    }
-};
+
+mongoose.connect(URI_MONGODB, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "error de conexión:"));
+
+db.on("disconnected", function () {
+  console.log("Desconectado de la base de datos");
+  mongoose.connect(URI_MONGODB, { useNewUrlParser: true, useUnifiedTopology: true });
+});
+
+db.once("open", function () {
+  console.log("Conectado a la base de datos");
+});
+
+export default mongoose;

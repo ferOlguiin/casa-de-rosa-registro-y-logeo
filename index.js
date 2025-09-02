@@ -1,7 +1,9 @@
 import app from "./app.js";
 import { PORT } from "./config.js";
-import {connectDB} from './db.js'
+import mongoose from './db.js'
 
-connectDB();
+mongoose.connection.on("open", function () {
+  console.log("La base de datos está conectada");
+});
 
 app.listen(PORT, console.log("Servidor listo y funcionando en el puerto"));
