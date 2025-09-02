@@ -85,7 +85,6 @@ export const LogearUsuario = async (req, res) => {
 //POST PETITION
 export const ActualizarToken = async (req, res) => {
 
-    console.log(req.headers);
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) return res.status(401).send("Refresh token requerido");
     
